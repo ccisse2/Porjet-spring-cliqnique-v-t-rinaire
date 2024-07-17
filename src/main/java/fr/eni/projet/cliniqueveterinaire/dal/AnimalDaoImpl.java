@@ -104,7 +104,7 @@ public class AnimalDaoImpl implements AnimalDAO {
         jdbcTemplate.update(DELETE_ANIMAL, namedParameters);
     }
 
-    private static class AnimalRowMapper implements RowMapper<Animal> {
+     class AnimalRowMapper implements RowMapper<Animal> {
 
         @Override
         public Animal mapRow(ResultSet rs, int rowNum) throws SQLException {

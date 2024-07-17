@@ -1,5 +1,6 @@
 package fr.eni.projet.cliniqueveterinaire.bo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -185,6 +186,9 @@ public class Clients {
 
     @Override
     public int hashCode() {
-        return Objects.hash(codeClient, nom, prenom, adresse1, adresse2, codePostal, ville, numTel, assurance, email, remarque, archive, animauxList);
+        return Objects.hash(codeClient, nom, prenom, adresse1, adresse2, codePostal, ville, numTel, assurance, email,
+                remarque, archive, animauxList);
     }
+
+
 }
