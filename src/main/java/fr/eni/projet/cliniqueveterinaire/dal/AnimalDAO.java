@@ -14,4 +14,6 @@ public interface AnimalDAO {
     void update(Animal animal);
 
     void delete(Animal animal);
+
+    List<Animal> findAnimalsClient(long codeClient);
 }

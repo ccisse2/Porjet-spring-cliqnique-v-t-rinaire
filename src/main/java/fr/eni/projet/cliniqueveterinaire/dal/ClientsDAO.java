@@ -14,5 +14,7 @@ public interface ClientsDAO {
 
     void delete(long codeClient);
 
+    List<Clients> findByNom(String nom);
+
     List<Clients> findAll();
 }

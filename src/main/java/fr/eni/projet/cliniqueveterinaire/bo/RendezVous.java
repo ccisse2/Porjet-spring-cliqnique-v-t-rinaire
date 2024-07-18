@@ -16,6 +16,10 @@ public class RendezVous {
         this.veterinaire = veterinaire;
     }
 
+    public RendezVous() {
+
+    }
+
     @Override
     public String toString() {
         return "RendezVous{" +

@@ -20,6 +20,10 @@ public class Personnel {
         this.rendezVousList = rendezVousList;
     }
 
+    public Personnel() {
+
+    }
+
     @Override
     public String toString() {
         return "Personnel{" +

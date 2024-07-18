@@ -41,6 +41,9 @@ public class AnimalDaoImpl implements AnimalDAO {
                     "Archive = :archive " +
                     "WHERE CodeAnimal = :codeAnimal";
 
+    private static final String SELECT_ALL_ANIMALS_BY_CLIENT = "SELECT Animal.CodeAnimal, Animal.Nom, Animal.Prenom, Animal.Race, Animal.Couleur, Animal.DateNaissance " +
+            "FROM Clients INNER JOIN Animal ON Clients.CodeClient = Animal.CodeClient WHERE Clients.CodeClient = :codeClient";
+
     public AnimalDaoImpl(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -102,6 +105,14 @@ public class AnimalDaoImpl implements AnimalDAO {
         namedParameters.addValue("codeAnimal", animal.getCodeAnimal());
 
         jdbcTemplate.update(DELETE_ANIMAL, namedParameters);
+    }
+
+    @Override
+    public List<Animal> findAnimalsClient(long codeClient) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("codeClient", codeClient);
+
+        return jdbcTemplate.query(SELECT_ALL_ANIMALS_BY_CLIENT, namedParameters, new AnimalRowMapper());
     }
 
      class AnimalRowMapper implements RowMapper<Animal> {
