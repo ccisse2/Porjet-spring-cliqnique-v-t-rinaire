@@ -1,0 +1,30 @@
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100vh;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+}
+
+header {
+	padding: 5px;
+	background-color: #0b5506;
+	
+}
+
+h1 {
+	font-size: 1.8em;
+}
+
+footer {
+	background-color: #0b5506;
+	padding: 10px;
+	text-align: center;
+	color: white;
+	height: auto;
+}
+
+nav li {	
+	font-size: 1.2em;
+}

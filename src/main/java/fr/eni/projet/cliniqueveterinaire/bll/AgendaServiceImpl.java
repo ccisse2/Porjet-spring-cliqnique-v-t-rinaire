@@ -2,15 +2,19 @@ package fr.eni.projet.cliniqueveterinaire.bll;
 
 import fr.eni.projet.cliniqueveterinaire.bo.RendezVous;
 import fr.eni.projet.cliniqueveterinaire.dal.RendezVousDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Repository
 public class AgendaServiceImpl implements AgendaService {
 
     private final RendezVousDAO rendezVousDAO;
 
+    @Autowired
     public AgendaServiceImpl(RendezVousDAO rendezVousDAO) {
         this.rendezVousDAO = rendezVousDAO;
     }

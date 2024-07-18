@@ -2,16 +2,19 @@ package fr.eni.projet.cliniqueveterinaire.dal;
 
 import fr.eni.projet.cliniqueveterinaire.bo.Animal;
 import fr.eni.projet.cliniqueveterinaire.bo.Clients;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class AnimalDaoImpl implements AnimalDAO {
 
     private NamedParameterJdbcTemplate jdbcTemplate;
@@ -44,6 +47,7 @@ public class AnimalDaoImpl implements AnimalDAO {
     private static final String SELECT_ALL_ANIMALS_BY_CLIENT = "SELECT Animal.CodeAnimal, Animal.Nom, Animal.Prenom, Animal.Race, Animal.Couleur, Animal.DateNaissance " +
             "FROM Clients INNER JOIN Animal ON Clients.CodeClient = Animal.CodeClient WHERE Clients.CodeClient = :codeClient";
 
+    @Autowired
     public AnimalDaoImpl(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

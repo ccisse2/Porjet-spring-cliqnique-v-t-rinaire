@@ -23,7 +23,6 @@ GO
 CREATE TABLE Clients (
                          CodeClient INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
                          Nom NVARCHAR(20) NOT NULL,
-                         Prenom NVARCHAR(20) NOT NULL,
                          Adresse1 NVARCHAR(30) NOT NULL,
                          Adresse2 NVARCHAR(30) NULL,
                          Ville NVARCHAR(25) NOT NULL,

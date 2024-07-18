@@ -7,15 +7,15 @@ public class Personnel {
     private long codePers;
     private String nom;
     private String motPasse;
-    private String role;
+    private List<String> roles;  // Changement de role à roles
     private boolean archive;
     private List<RendezVous> rendezVousList;
 
-    public Personnel(long codePers, String nom, String motPasse, String role, boolean archive, List<RendezVous> rendezVousList) {
+    public Personnel(long codePers, String nom, String motPasse, List<String> roles, boolean archive, List<RendezVous> rendezVousList) {
         this.codePers = codePers;
         this.nom = nom;
         this.motPasse = motPasse;
-        this.role = role;
+        this.roles = roles;  // Changement de role à roles
         this.archive = archive;
         this.rendezVousList = rendezVousList;
     }
@@ -30,7 +30,7 @@ public class Personnel {
                 "codePers=" + codePers +
                 ", nom='" + nom + '\'' +
                 ", motPasse='" + motPasse + '\'' +
-                ", role='" + role + '\'' +
+                ", roles=" + roles +  // Changement de role à roles
                 ", archive=" + archive +
                 ", rendezVousList=" + rendezVousList +
                 '}';
@@ -61,12 +61,12 @@ public class Personnel {
         this.motPasse = motPasse;
     }
 
-    public String getRole() {
-        return role;
+    public List<String> getRoles() {  // Changement de role à roles
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(List<String> roles) {  // Changement de role à roles
+        this.roles = roles;
     }
 
     public boolean isArchive() {
@@ -94,12 +94,12 @@ public class Personnel {
                 archive == personnel.archive &&
                 Objects.equals(nom, personnel.nom) &&
                 Objects.equals(motPasse, personnel.motPasse) &&
-                Objects.equals(role, personnel.role) &&
+                Objects.equals(roles, personnel.roles) &&  // Changement de role à roles
                 Objects.equals(rendezVousList, personnel.rendezVousList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codePers, nom, motPasse, role, archive, rendezVousList);
+        return Objects.hash(codePers, nom, motPasse, roles, archive, rendezVousList);  // Changement de role à roles
     }
 }

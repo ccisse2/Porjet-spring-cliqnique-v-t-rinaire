@@ -1,13 +1,22 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<!-- Mise en place du layout -->
+<!-- Accueil comme titre de page -->
+<!-- la balise main définit par la classe de CSS 'center-main' comme paramètre contenuPage -->
+<html xmlns:th="http://www.thymeleaf.org"
+      data-th-replace="~{layouts/layout :: layout-clinique(
+					titrePage=~{:: title},
+					contenuPage=~{:: main},
+					ressourcesSupp=~{})}">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <!-- Accueil comme titre de page -->
+    <title data-th-text="#{index.title}"></title>
 </head>
 <body>
-
+<main class="center-main">
+    <section class="center-section">
+        <h1 style="text-align: center;" data-th-text="#{index.h1}"></h1>
+    </section>
+</main>
 </body>
 </html>

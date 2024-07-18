@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-th-replace="~{layouts/layout :: layout-clinique
+(titrePage=~{:: title},
+contenuPage=~{:: main},
+ressourcesSupp=~{:: #ressources-css})}">
+<head>
+    <title data-th-text="#{view-personnels.title}">Gestion du Personnel</title>
+    <th:block id="ressources-css">
+        <link rel="stylesheet" data-th-href="@{/css/tp-table.css}">
+        <link rel="stylesheet" data-th-href="@{/css/general.css}">
+    </th:block>
+</head>
+<body>
+<main>
+    <h1 data-th-text="#{view-personnels.h1}"></h1>
+    <a id="btn-ajout" data-th-href="@{/personnels/creer}" data-th-text="#{view-personnels.li.ajouter}">Ajouter un personnel</a>
+    <table>
+        <thead>
+        <tr>
+            <th data-th-text="#{view-personnels.th.nom}">Nom</th>
+            <th data-th-text="#{view-personnels.th.role}">Rôle</th>
+            <th data-th-text="#{view-personnels.th.motdpasse}">Mot de Passe</th>
+            <th data-th-text="#{view-personnels.th.actions}">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-th-each="p : ${personnel}">
+            <td data-th-text="${p.nom}"></td>
+            <td data-th-each="role : ${p.roles}" data-th-text="${role}">
+            </td>
+            <td data-th-text="${p.motPasse}"></td>
+            <td>
+                <a data-th-href="@{/personnels/delete(id=${p.codePers})}" data-th-text="#{view-personnels.li.delete}">Supprimer</a>
+                <a data-th-href="@{/personnels/modifier(id=${p.codePers})}" data-th-text="#{view-personnels.li.modifier}">Modifier</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

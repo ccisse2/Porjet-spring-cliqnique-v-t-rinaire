@@ -15,5 +15,5 @@ public interface PersonnelService {
 
     void reinitialiserMotPasse(long codePers, String nouveauMotPasse);
 
-    List<Personnel> rechercherToutPersonnel();
+    List<Personnel> afficherToutPersonnel();
 }

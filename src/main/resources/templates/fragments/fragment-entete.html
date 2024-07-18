@@ -3,45 +3,26 @@
     <section id="nav-title">
         <h1>
             <a href="/">
-                <img data-th-src="@{/images/logoFilmotheque.png}">
+               <!-- <img data-th-src="@{/images/logoVeterinaire.png}"/> -->
                 <span data-th-text="#{nom-application}"></span>
             </a>
-
-          <!--  <th:block data-th-if="${membreEnSession != null && membreEnSession.id > 0}">
-
-                <span data-th-text="'['+ ${membreEnSession.prenom}+']'"></span>
-            </th:block> -->
-
         </h1>
-        <div>
-            <a href="/?language=fr"><img alt="Français" src="/images/French.webp"></a>
-
-            <a href="/?language=en"><img alt="English" src="/images/English.webp"></a>
-        </div>
     </section>
     <nav>
         <ul>
             <li >
-                <a href="/films" data-th-text="#{frag-entete.a.films}"></a>
+                <a href="/fichier" data-th-text="#{frag-entete.a.fichier}"></a>
             </li>
 
-            <li data-th-if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                <a href="/films/creer" data-th-text="#{frag-entete.a.films.creer}"></a>
+            <li >
+                <a href="/rendez-vous" data-th-text="#{frag-entete.a.rdv}"></a>
             </li>
 
-            <!--  <li data-th-if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                  <a href="/contexte" data-th-text="#{frag-entete.a.contexte}"></a>
-              </li>-->
-            <!-- Gestion de la connexion et déconnexion via Spring Security Dialect -->
-            <li data-th-if="${!#authorization.expression('isAuthenticated()')}">
-
-                <a href="/login" data-th-text="#{frag-entete.a.connexion}"></a>
-
+            <li >
+                <a href="/login" data-th-text="#{frag-entete.a.agenda}"></a>
             </li>
-            <li data-th-if="${#authorization.expression('isAuthenticated()')}">
-
-                <a href="/logout" data-th-text="#{frag-entete.a.deconnexion}"></a>
-
+            <li >
+                <a href="/personnels" data-th-text="#{frag-entete.a.Gest-personnel}"></a>
             </li>
         </ul>
     </nav>

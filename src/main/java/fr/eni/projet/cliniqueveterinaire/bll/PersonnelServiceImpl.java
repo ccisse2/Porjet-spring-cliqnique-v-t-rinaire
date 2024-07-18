@@ -2,12 +2,19 @@ package fr.eni.projet.cliniqueveterinaire.bll;
 
 import fr.eni.projet.cliniqueveterinaire.bo.Personnel;
 import fr.eni.projet.cliniqueveterinaire.dal.PersonnelDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class PersonnelServiceImpl implements PersonnelService {
     private PersonnelDAO personnelDAO;
 
+    @Autowired
+    public void setPersonnelDAO(PersonnelDAO personnelDAO) {
+        this.personnelDAO = personnelDAO;
+    }
     @Override
     public void ajouterPersonnel(Personnel personnel) {
         personnelDAO.create(personnel);
@@ -36,7 +43,7 @@ public class PersonnelServiceImpl implements PersonnelService {
     }
 
     @Override
-    public List<Personnel> rechercherToutPersonnel() {
+    public List<Personnel> afficherToutPersonnel() {
         return personnelDAO.findAll();
     }
 }

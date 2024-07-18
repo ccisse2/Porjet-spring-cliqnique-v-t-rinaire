@@ -12,7 +12,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 class PersonnelServiceImplTest {
@@ -73,7 +72,7 @@ class PersonnelServiceImplTest {
     @Test
     void testRechercherToutPersonnel() {
         when(personnelDAO.findAll()).thenReturn(List.of(new Personnel()));
-        List<Personnel> personnels = personnelService.rechercherToutPersonnel();
+        List<Personnel> personnels = personnelService.afficherToutPersonnel();
         verify(personnelDAO, times(1)).findAll();
         assertFalse(personnels.isEmpty());
     }

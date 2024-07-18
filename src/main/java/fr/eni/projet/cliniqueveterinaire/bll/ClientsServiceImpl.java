@@ -4,13 +4,17 @@ import fr.eni.projet.cliniqueveterinaire.bo.Animal;
 import fr.eni.projet.cliniqueveterinaire.bo.Clients;
 import fr.eni.projet.cliniqueveterinaire.dal.AnimalDAO;
 import fr.eni.projet.cliniqueveterinaire.dal.ClientsDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ClientsServiceImpl implements ClientsService {
     private ClientsDAO clientsDAO;
     private AnimalDAO animalDAO;
 
+    @Autowired
     public ClientsServiceImpl(ClientsDAO clientsDAO, AnimalDAO animalDAO) {
         this.clientsDAO = clientsDAO;
         this.animalDAO = animalDAO;

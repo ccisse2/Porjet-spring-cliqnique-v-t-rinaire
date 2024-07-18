@@ -1,26 +1,41 @@
 package fr.eni.projet.cliniqueveterinaire.dal;
 
 import fr.eni.projet.cliniqueveterinaire.bo.Personnel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@Repository
 public class PersonnelDaoImpl implements PersonnelDAO {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
-    private static final String INSERT_PERSONNEL = "INSERT INTO Personnels (Nom, MotPasse, Role, Archive) " +
-            "VALUES (:nom, :motPasse, :role, :archive)";
-    private static final String SELECT_PERSONNEL_BY_CODE = "SELECT CodePers, Nom, MotPasse, Role, Archive FROM Personnels WHERE CodePers = :codePers";
-    private static final String SELECT_ALL_PERSONNELS = "SELECT CodePers, Nom, MotPasse, Role, Archive FROM Personnels";
+    private static final String INSERT_PERSONNEL = "INSERT INTO Personnels (Nom, MotPasse, Archive) " +
+            "VALUES (:nom, :motPasse, :archive)";
+    private static final String INSERT_PERSONNEL_ROLE = "INSERT INTO PersonnelRoles (CodePers, CodeRole) " +
+            "VALUES (:codePers, :codeRole)";
+    private static final String SELECT_PERSONNEL_BY_CODE = "SELECT p.CodePers, p.Nom, p.MotPasse, r.Description AS Role, p.Archive " +
+            "FROM Personnels p " +
+            "LEFT JOIN PersonnelRoles pr ON p.CodePers = pr.CodePers " +
+            "LEFT JOIN Roles r ON pr.CodeRole = r.CodeRole " +
+            "WHERE p.CodePers = :codePers";
+    private static final String SELECT_ALL_PERSONNELS = "SELECT p.CodePers, p.Nom, p.MotPasse, r.Description AS Role, p.Archive " +
+            "FROM Personnels p " +
+            "LEFT JOIN PersonnelRoles pr ON p.CodePers = pr.CodePers " +
+            "LEFT JOIN Roles r ON pr.CodeRole = r.CodeRole";
     private static final String DELETE_PERSONNEL = "DELETE FROM Personnels WHERE CodePers = :codePers";
-    private static final String UPDATE_PERSONNEL = "UPDATE Personnels SET Nom = :nom, MotPasse = :motPasse, Role = :role, Archive = :archive WHERE CodePers = :codePers";
+    private static final String DELETE_PERSONNEL_ROLES = "DELETE FROM PersonnelRoles WHERE CodePers = :codePers";
+    private static final String UPDATE_PERSONNEL = "UPDATE Personnels SET Nom = :nom, MotPasse = :motPasse, Archive = :archive WHERE CodePers = :codePers";
+    private static final String UPDATE_PERSONNEL_ROLE = "UPDATE PersonnelRoles SET CodeRole = :codeRole WHERE CodePers = :codePers";
 
+    @Autowired
     public PersonnelDaoImpl(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -32,13 +47,20 @@ public class PersonnelDaoImpl implements PersonnelDAO {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("nom", personnel.getNom());
         namedParameters.addValue("motPasse", personnel.getMotPasse());
-        namedParameters.addValue("role", personnel.getRole());
         namedParameters.addValue("archive", personnel.isArchive());
 
         jdbcTemplate.update(INSERT_PERSONNEL, namedParameters, keyHolder);
 
         if (keyHolder.getKey() != null) {
-            personnel.setCodePers(keyHolder.getKey().longValue());
+            long codePers = keyHolder.getKey().longValue();
+            personnel.setCodePers(codePers);
+
+            for (String role : personnel.getRoles()) {
+                MapSqlParameterSource roleParameters = new MapSqlParameterSource();
+                roleParameters.addValue("codePers", codePers);
+                roleParameters.addValue("codeRole", role);
+                jdbcTemplate.update(INSERT_PERSONNEL_ROLE, roleParameters);
+            }
         }
     }
 
@@ -55,11 +77,17 @@ public class PersonnelDaoImpl implements PersonnelDAO {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("nom", personnel.getNom());
         namedParameters.addValue("motPasse", personnel.getMotPasse());
-        namedParameters.addValue("role", personnel.getRole());
         namedParameters.addValue("archive", personnel.isArchive());
         namedParameters.addValue("codePers", personnel.getCodePers());
 
         jdbcTemplate.update(UPDATE_PERSONNEL, namedParameters);
+
+        for (String role : personnel.getRoles()) {
+            MapSqlParameterSource roleParameters = new MapSqlParameterSource();
+            roleParameters.addValue("codePers", personnel.getCodePers());
+            roleParameters.addValue("codeRole", role);
+            jdbcTemplate.update(UPDATE_PERSONNEL_ROLE, roleParameters);
+        }
     }
 
     @Override
@@ -67,6 +95,7 @@ public class PersonnelDaoImpl implements PersonnelDAO {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("codePers", codePers);
 
+        jdbcTemplate.update(DELETE_PERSONNEL_ROLES, namedParameters);
         jdbcTemplate.update(DELETE_PERSONNEL, namedParameters);
     }
 
@@ -82,10 +111,9 @@ public class PersonnelDaoImpl implements PersonnelDAO {
             p.setCodePers(rs.getLong("CodePers"));
             p.setNom(rs.getString("Nom"));
             p.setMotPasse(rs.getString("MotPasse"));
-            p.setRole(rs.getString("Role"));
+            p.setRoles(List.of(rs.getString("Role")));
             p.setArchive(rs.getBoolean("Archive"));
             return p;
         }
     }
 }
-
