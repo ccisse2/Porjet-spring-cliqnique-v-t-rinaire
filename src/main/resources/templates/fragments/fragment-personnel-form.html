@@ -1,0 +1,35 @@
+<form xmlns:th="http://www.thymeleaf.org"
+      data-th-fragment="frag-personnel-form(titreForm, action)"  data-th-action="@{${action}}"
+      method="post" data-th-object="${personnel}">
+    <h1 data-th-text="${titreForm}"></h1>
+   <!-- <th:block data-th-if="${!#strings.isEmpty(action)}">
+        <div data-th-replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
+    </th:block>-->
+
+    <ul class="flex-outer">
+        <li>
+            <label for="roles" data-th-text="#{frag-personel-form.role}"> </label>
+            <!-- Utilisation d'un test pour différencier les 2 blocs -->
+            <th:block data-th-if="${!#strings.isEmpty(action)}">
+                <select id="roles" data-th-field="*{roles}" multiple>
+                    <option data-th-each="role : ${roleEnSession}" data-th-value="${role.codeRole}" th:text="${role.description}"></option>
+                </select>
+            </th:block>
+            <th:block data-th-if="${#strings.isEmpty(action)}">
+                <input type="text" id="inputRole" data-th-disabled="${#strings.isEmpty(action)}"
+                       data-th-field="*{role.description}" required />
+            </th:block>
+        </li>
+        <li>
+            <label for="nom" data-th-text="#{frag-personel-form.nom}"></label>
+            <input type="text" id="nom" data-th-field="*{nom}" required>
+        </li>
+        <li>
+            <label for="motPasse" data-th-text="view-personnels.th.motdpasse"></label>
+            <input type="password" id="motPasse" data-th-field="*{motPasse}" required>
+        </li>
+        <li data-th-if="${!#strings.isEmpty(action)}">
+            <button type="submit" data-th-text="#{frag-film-form.enregistrer}"></button>
+        </li>
+    </ul>
+</form>

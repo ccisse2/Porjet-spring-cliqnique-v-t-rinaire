@@ -1,6 +1,7 @@
 package fr.eni.projet.cliniqueveterinaire.bll;
 
 import fr.eni.projet.cliniqueveterinaire.bo.Personnel;
+import fr.eni.projet.cliniqueveterinaire.bo.Role;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface PersonnelService {
     void reinitialiserMotPasse(long codePers, String nouveauMotPasse);
 
     List<Personnel> afficherToutPersonnel();
+
+    List<Role> consulterTousRoles();
 }

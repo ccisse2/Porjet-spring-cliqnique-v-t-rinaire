@@ -1,12 +1,15 @@
 package fr.eni.projet.cliniqueveterinaire.dal;
 
 import fr.eni.projet.cliniqueveterinaire.bo.Personnel;
+import fr.eni.projet.cliniqueveterinaire.bo.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -16,6 +19,7 @@ import java.util.List;
 @Repository
 public class PersonnelDaoImpl implements PersonnelDAO {
     private NamedParameterJdbcTemplate jdbcTemplate;
+    private PasswordEncoder passwordEncoder;
 
     private static final String INSERT_PERSONNEL = "INSERT INTO Personnels (Nom, MotPasse, Archive) " +
             "VALUES (:nom, :motPasse, :archive)";
@@ -34,19 +38,22 @@ public class PersonnelDaoImpl implements PersonnelDAO {
     private static final String DELETE_PERSONNEL_ROLES = "DELETE FROM PersonnelRoles WHERE CodePers = :codePers";
     private static final String UPDATE_PERSONNEL = "UPDATE Personnels SET Nom = :nom, MotPasse = :motPasse, Archive = :archive WHERE CodePers = :codePers";
     private static final String UPDATE_PERSONNEL_ROLE = "UPDATE PersonnelRoles SET CodeRole = :codeRole WHERE CodePers = :codePers";
-
+    private static final String SELECT_ALL_ROLES = "SELECT CodeRole, Description FROM Roles";
     @Autowired
-    public PersonnelDaoImpl(NamedParameterJdbcTemplate jdbcTemplate) {
+    public PersonnelDaoImpl(NamedParameterJdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void create(Personnel personnel) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
+        String encodedPassword = passwordEncoder.encode(personnel.getMotPasse());
+
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("nom", personnel.getNom());
-        namedParameters.addValue("motPasse", personnel.getMotPasse());
+        namedParameters.addValue("motPasse", encodedPassword);
         namedParameters.addValue("archive", personnel.isArchive());
 
         jdbcTemplate.update(INSERT_PERSONNEL, namedParameters, keyHolder);
@@ -76,7 +83,7 @@ public class PersonnelDaoImpl implements PersonnelDAO {
     public void update(Personnel personnel) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("nom", personnel.getNom());
-        namedParameters.addValue("motPasse", personnel.getMotPasse());
+        namedParameters.addValue("motPasse", passwordEncoder.encode(personnel.getMotPasse()));
         namedParameters.addValue("archive", personnel.isArchive());
         namedParameters.addValue("codePers", personnel.getCodePers());
 
@@ -104,6 +111,11 @@ public class PersonnelDaoImpl implements PersonnelDAO {
         return jdbcTemplate.query(SELECT_ALL_PERSONNELS, new PersonnelRowMapper());
     }
 
+    @Override
+    public List<Role> findAllRoles() {
+        return jdbcTemplate.query(SELECT_ALL_ROLES, new RoleRowMapper());
+    }
+
     class PersonnelRowMapper implements RowMapper<Personnel> {
         @Override
         public Personnel mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -114,6 +126,16 @@ public class PersonnelDaoImpl implements PersonnelDAO {
             p.setRoles(List.of(rs.getString("Role")));
             p.setArchive(rs.getBoolean("Archive"));
             return p;
+        }
+    }
+
+    class RoleRowMapper implements RowMapper<Role> {
+        @Override
+        public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Role role = new Role();
+            role.setCodeRole(rs.getString("CodeRole"));
+            role.setDescription(rs.getString("Description"));
+            return role;
         }
     }
 }

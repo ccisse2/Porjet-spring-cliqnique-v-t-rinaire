@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      data-th-replace="~{layouts/layout :: layout-clinique(
+						titrePage=~{:: title},
+						contenuPage=~{:: main},
+						ressourcesSupp=~{:: #ressources-css})}">
+<head>
+    <!-- Créer comme titre de page -->
+    <title data-th-text="#{view-personnel-form.title}"></title>
+    <!-- Ajout de CSS tp-form.css -->
+    <th:block id="ressources-css">
+        <link rel="stylesheet" data-th-href="@{/css/tp-form.css}">
+        <link rel="stylesheet" data-th-href="@{/css/tp-error.css}">
+
+    </th:block>
+</head>
+<body>
+<main>
+    <form data-th-replace="~{fragments/fragment-personnel-form ::
+					frag-personnel-form(#{view-personnel-form.h1}, '/personnels/creer')}">
+    </form>
+</main>
+</body>
+</html>

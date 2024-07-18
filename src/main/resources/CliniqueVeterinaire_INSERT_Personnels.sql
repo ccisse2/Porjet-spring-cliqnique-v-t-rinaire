@@ -3,7 +3,7 @@ GO
 
 
 -- Insertion des personnes dans la table Personnels
-INSERT INTO Personnels (Nom, MotPasse, Archive) VALUES ('BOSAPIN Edmond', 'password123', 0);
+INSERT INTO Personnels (Nom, MotPasse, Archive) VALUES ('BOSAPIN Edmond', 'password123', 0); --mots de passe
 INSERT INTO Personnels (Nom, MotPasse, Archive) VALUES ('DE CAJOU Benoît', 'password123', 0);
 INSERT INTO Personnels (Nom, MotPasse, Archive) VALUES ('MALALANICH Mélanie', 'password123', 0);
 INSERT INTO Personnels (Nom, MotPasse, Archive) VALUES ('AIMONE Anne', 'password123', 0);

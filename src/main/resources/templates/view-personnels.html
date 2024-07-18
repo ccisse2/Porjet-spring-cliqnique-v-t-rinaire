@@ -28,7 +28,7 @@ ressourcesSupp=~{:: #ressources-css})}">
             <td data-th-text="${p.nom}"></td>
             <td data-th-each="role : ${p.roles}" data-th-text="${role}">
             </td>
-            <td data-th-text="${p.motPasse}"></td>
+            <td data-th-text="${'*'.repeat(8)}"></td>
             <td>
                 <a data-th-href="@{/personnels/delete(id=${p.codePers})}" data-th-text="#{view-personnels.li.delete}">Supprimer</a>
                 <a data-th-href="@{/personnels/modifier(id=${p.codePers})}" data-th-text="#{view-personnels.li.modifier}">Modifier</a>
